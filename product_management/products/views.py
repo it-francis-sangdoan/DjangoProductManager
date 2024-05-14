@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Product
+from django.contrib import messages
 from product_management.firebase_utils import upload_image_to_firebase
 
 def product_list(request):
@@ -27,4 +28,27 @@ def product_create(request):
         )
         product.save()
 
-    return render(request, 'products/add_product.html')
+    return render(request, 'products/product_add.html')
+
+def product_update(request, product_id):
+    product = Product.objects.get(id=product_id)
+    if request.method == 'POST':
+        product.name = request.POST.get('name')
+        product.price_purchase = float(request.POST.get('price_purchase'))
+        product.price_sale = float(request.POST.get('price_sale'))
+        product.quantity = int(request.POST.get('quantity'))
+
+        image = request.FILES['file']
+        formatted_filename = product.name.replace(" ", "_").lower()
+        file_url = upload_image_to_firebase(image, 'products', formatted_filename)
+        print(file_url)
+        product.image = file_url
+        product.save()
+
+    return render(request, 'products/product_update.html', {'product': product})
+
+def product_delete(request, product_id):
+    item_product = Product.objects.get(id=product_id)
+    item_product.delete()
+    messages.success(request, 'Product has been deleted successfully!')
+    return redirect("/products/")

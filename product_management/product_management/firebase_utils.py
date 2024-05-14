@@ -6,7 +6,7 @@ from django.core.files.storage import default_storage
 
 load_dotenv()
 
-def upload_image_to_firebase(image_file, upload_path, image_name):
+def get_firebase_storage():
     FIREBASE_CONFIG = {
         "apiKey": os.getenv("FIREBASE_API_KEY"),
         "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN"),
@@ -18,7 +18,9 @@ def upload_image_to_firebase(image_file, upload_path, image_name):
         "databaseURL": os.getenv("FIREBASE_DATABASE_URL")
     }
     firebase = pyrebase.initialize_app(FIREBASE_CONFIG)
-    storage = firebase.storage()
+    return firebase.storage()
+
+def upload_image_to_firebase(image_file, upload_path, image_name):
 
     try:
         _, file_extension = os.path.splitext(image_file.name)
@@ -26,6 +28,7 @@ def upload_image_to_firebase(image_file, upload_path, image_name):
         file_name = f"{image_name}{file_extension}"
         # file_name = image_file.name
         file_path = default_storage.save(file_name, ContentFile(image_file.read()))
+        storage = get_firebase_storage()
 
         # Upload file to the specified path in Firebase Storage
         storage.child(f"{upload_path}/{file_name}").put(file_path)
