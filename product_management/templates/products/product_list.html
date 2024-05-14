@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="mt-5">
+
+        <div class="container">
+            <div class="mb-5 d-flex justify-content-between align-items-end">
+                <h1>List of products</h1>
+                <a href="/products/create/" class="btn btn-info">Add product</a>
+            </div>
+            {% if messages %}
+            <div class="alert alert-success">
+                <ul class="mb-0">
+                    {% for mess in messages %}
+                        <li>{{ mess }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product name</th>
+                        <th>Purchase price</th>
+                        <th>Sale price</th>
+                        <th>Quantity of Inventory</th>
+                        <th>Quantity sold</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td><img src="{{ product.image }}" alt="{{ product.name }}" class="img-thumbnail" style="max-width: 100px;"></td>
+                            <td>{{product.name}}</td>
+                            <td>{{product.price_purchase}}</td>
+                            <td>{{product.price_sale}}</td>
+                            <td>{{product.quantity}}</td>
+                            <td>{{product.quantity_sold}}</td>
+                            <td>
+                                <a href="/products/update/{{product.id}}/" class="btn btn-info btn-sm">Edit</a>
+                                <a href="/products/delete/{{product.id}}/" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <!-- Scripts for Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
