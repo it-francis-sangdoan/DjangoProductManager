@@ -1,0 +1,1 @@
+# DjangoProductManager
