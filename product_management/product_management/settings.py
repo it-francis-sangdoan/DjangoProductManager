@@ -79,8 +79,17 @@ WSGI_APPLICATION = 'product_management.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'products',
+        # os.getenv("DATABASE_NAME"),
+        'USER': 'postgres',
+        # os.getenv("DATABASE_USER"),
+        'PASSWORD': 123456,
+        # os.getenv("DATABASE_PASSWORD"),
+        'HOST': 'db',
+        # os.getenv("DATABASE_HOST"),
+        'PORT': 5432
+        # os.getenv("DATABASE_PORT"),
     }
 }
 
