@@ -1,0 +1,4 @@
+Django==4.2.2
+psycopg2-binary>=2.8
+python-dotenv==0.10.1
+pyrebase==3.0.27
